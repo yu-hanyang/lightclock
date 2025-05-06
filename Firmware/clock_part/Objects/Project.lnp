@@ -31,6 +31,7 @@
 ".\objects\key.o"
 ".\objects\oled.o"
 ".\objects\encoder.o"
+".\objects\countsensor.o"
 ".\objects\main.o"
 ".\objects\stm32f10x_it.o"
 --strict --scatter ".\Objects\Project.sct"

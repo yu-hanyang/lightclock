@@ -720,6 +720,16 @@
               <FileType>5</FileType>
               <FilePath>.\Hardware\Encoder.h</FilePath>
             </File>
+            <File>
+              <FileName>CountSensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\CountSensor.c</FilePath>
+            </File>
+            <File>
+              <FileName>CountSensor.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\CountSensor.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

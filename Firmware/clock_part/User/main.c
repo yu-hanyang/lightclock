@@ -3,6 +3,7 @@
 #include "OLED.h"
 #include "Timer.h"
 #include "Encoder.h"
+#include "CountSensor.h"
 
 int16_t Speed = 0;
 
@@ -17,14 +18,15 @@ int main(void)
 {
     OLED_Init();
     Timer_Init();
-    Encoder_Init();
+    Encoder_Init(); //编码器初始化
+    CountSensor_Init();		//计数传感器初始化
 
     OLED_ShowString(1, 1, "Speed:");
     while (1)
     {
         OLED_ShowSignedNum(1, 7, Speed, 5);
         OLED_ShowString(2, 1, "Mode:");
-        OLED_ShowNum(2, 7, info.mode, 1);
+        OLED_ShowNum(2, 7, CountSensor_Get(), 1);
         OLED_ShowString(3, 1, "value:");
         OLED_ShowNum(3, 8, info.value, 3);
 

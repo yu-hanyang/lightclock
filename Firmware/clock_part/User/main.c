@@ -4,6 +4,7 @@
 #include "Timer.h"
 #include "Encoder.h"
 #include "CountSensor.h"
+#include "MyRTC.h"
 
 int16_t Speed = 0;
 
@@ -16,15 +17,30 @@ user_info info = { 0, 0 };
 
 int main(void)
 {
+    //模块初始化
     OLED_Init();
     Timer_Init();
     Encoder_Init(); //编码器初始化
     CountSensor_Init();		//计数传感器初始化
-
-    OLED_ShowString(1, 1, "Speed:");
+    MyRTC_Init();		//RTC初始化
+    
+    
+    OLED_ShowString(1, 1, "XX:XX:XX/XX-XXXX"); //时间显示
+    
     while (1)
     {
-        OLED_ShowSignedNum(1, 7, Speed, 5);
+        MyRTC_ReadTime();
+        
+        OLED_ShowNum(1, 1, MyRTC_Time[3], 2);		//时
+		OLED_ShowNum(1, 4, MyRTC_Time[4], 2);		//分
+		OLED_ShowNum(1, 7, MyRTC_Time[5], 2);		//秒
+        
+        OLED_ShowNum(1, 10, MyRTC_Time[0], 2);		//显示MyRTC_Time数组中的时间值，年
+		OLED_ShowNum(1, 13, MyRTC_Time[1], 2);		//月
+		OLED_ShowNum(1, 15, MyRTC_Time[2], 2);		//日
+        
+        
+        
         OLED_ShowString(2, 1, "Mode:");
         OLED_ShowNum(2, 7, CountSensor_Get(), 1);
         OLED_ShowString(3, 1, "value:");

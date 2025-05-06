@@ -7,6 +7,7 @@
 #include "MyRTC.h"
 
 int16_t Speed = 0;
+int16_t count_past = 0;
 
 typedef struct
 {
@@ -42,7 +43,12 @@ int main(void)
         
         
         OLED_ShowString(2, 1, "Mode:");
-        OLED_ShowNum(2, 7, CountSensor_Get(), 1);
+        if (count_past != CountSensor_Get() )
+        {
+            count_past  = CountSensor_Get();
+            info.mode ++;
+        }
+        OLED_ShowNum(2, 7,info.mode , 1);
         OLED_ShowString(3, 1, "value:");
         OLED_ShowNum(3, 8, info.value, 3);
 

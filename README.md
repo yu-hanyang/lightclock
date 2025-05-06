@@ -1,0 +1,2 @@
+# lightclock
+This is an alarm clock which can wake up humans with lights. Wind and water can also be used to awaken humans.

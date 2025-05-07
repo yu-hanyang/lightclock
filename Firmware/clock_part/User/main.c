@@ -12,7 +12,7 @@ int16_t count_past = 0;
 typedef struct
 {
     uint16_t mode;
-    uint16_t value;
+    int16_t value[10];
 } user_info;
 user_info info = { 0, 0 };
 
@@ -47,10 +47,11 @@ int main(void)
         {
             count_past  = CountSensor_Get();
             info.mode ++;
+            info.mode %= 10;
         }
         OLED_ShowNum(2, 7,info.mode , 1);
         OLED_ShowString(3, 1, "value:");
-        OLED_ShowNum(3, 8, info.value, 3);
+        OLED_ShowNum(3, 8, info.value[info.mode], 3);
 
     }
 }
@@ -62,26 +63,26 @@ void TIM2_IRQHandler(void)
         Speed = Encoder_Get();
         if (Speed > 0)
         {
-            if (Speed + info.value > 100)
+            if (Speed + info.value[info.mode] > 100)
             {
-                info.value = 100;
+                info.value[info.mode] = 100;
             }
             else
             {
-                info.value += Speed;
+                info.value[info.mode] += Speed;
             }
 
 
         }
         else if (Speed < 0)
         {
-            if (info.value + Speed < 0)
+            if (info.value[info.mode] + Speed < 0)
             {
-                info.value = 0;
+                info.value[info.mode] = 0;
             }
             else
             {
-                info.value += Speed;
+                info.value[info.mode] += Speed;
             }
         }
         TIM_ClearITPendingBit(TIM2, TIM_IT_Update);

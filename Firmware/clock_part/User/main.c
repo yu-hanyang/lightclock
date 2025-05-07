@@ -5,6 +5,8 @@
 #include "Encoder.h"
 #include "CountSensor.h"
 #include "MyRTC.h"
+#include "PWM.h"
+#include "Bigled.h"
 
 int16_t Speed = 0;
 int16_t count_past = 0;
@@ -24,6 +26,7 @@ int main(void)
     Encoder_Init(); //编码器初始化
     CountSensor_Init();		//计数传感器初始化
     MyRTC_Init();		//RTC初始化
+    PWM_Init();			//PWM初始化
     
     
     OLED_ShowString(1, 1, "XX:XX:XX/XX-XXXX"); //时间显示
@@ -52,6 +55,11 @@ int main(void)
         OLED_ShowNum(2, 7,info.mode , 1);
         OLED_ShowString(3, 1, "value:");
         OLED_ShowNum(3, 8, info.value[info.mode], 3);
+        
+        if (info.mode == 1)
+        {
+            Bigled_Set(info.value[info.mode]);
+        }
 
     }
 }

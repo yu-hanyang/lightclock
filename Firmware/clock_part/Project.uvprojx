@@ -740,6 +740,26 @@
               <FileType>5</FileType>
               <FilePath>.\Hardware\CountSensor.h</FilePath>
             </File>
+            <File>
+              <FileName>PWM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\PWM.c</FilePath>
+            </File>
+            <File>
+              <FileName>PWM.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\PWM.h</FilePath>
+            </File>
+            <File>
+              <FileName>Bigled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Hardware\Bigled.c</FilePath>
+            </File>
+            <File>
+              <FileName>Bigled.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Hardware\Bigled.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

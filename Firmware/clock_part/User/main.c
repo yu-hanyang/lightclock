@@ -19,7 +19,7 @@ typedef struct
 {
     uint16_t mode;
     int16_t value[10];
-    uint32_t ALarm[6];
+    uint16_t ALarm[6];
     time_t ALarm_cnt;
     uint32_t AL_flag; //用于判断是否是闹钟引发的唤醒
 } user_info;
@@ -170,11 +170,30 @@ int main(void)
         //串口数据部分
         if (Serial_GetRxFlag() == 1)	//如果接收到数据包
 		{   
+            //串口数据回显
             memcpy(Serial_TxPacket, Serial_RxPacket, 18);
            
             Serial_SendPacket();
             
-			
+            //串口数据处理
+            //时间
+            //0年 1年 2月 3日 4时 5分 6秒
+			MyRTC_Time[0] = Serial_RxPacket[0] * 100 + Serial_RxPacket[1];
+            MyRTC_Time[1] = Serial_RxPacket[2];
+            MyRTC_Time[2] = Serial_RxPacket[3];
+            MyRTC_Time[3] = Serial_RxPacket[4];
+            MyRTC_Time[4] = Serial_RxPacket[5];
+            MyRTC_Time[5] = Serial_RxPacket[6];
+            //闹钟
+            info.ALarm[0] = Serial_RxPacket[0 + 7] * 100 + Serial_RxPacket[1 + 7];
+            info.ALarm[1] = Serial_RxPacket[2 + 7];
+            info.ALarm[2] = Serial_RxPacket[3 + 7];
+            info.ALarm[3] = Serial_RxPacket[4 + 7];
+            info.ALarm[4] = Serial_RxPacket[5 + 7];
+            info.ALarm[5] = Serial_RxPacket[6 + 7];
+            
+            info.mode = Serial_RxPacket[14];
+            info.value[info.mode] = Serial_RxPacket[15];
 		}
         
 

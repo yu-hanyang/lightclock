@@ -10,13 +10,13 @@ void Motor_Init(void)
 {
 	/*开启时钟*/
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);		//开启GPIOA的时钟
-	//风力
+	//风力唤醒
 	GPIO_InitTypeDef GPIO_InitStructure;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_4 | GPIO_Pin_5;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);						//将PA4和PA5引脚初始化为推挽输出	
-	
+	//脉冲水流
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_12 | GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
@@ -44,4 +44,14 @@ void Motor_SetSpeed(int8_t Speed)
 		GPIO_SetBits(GPIOA, GPIO_Pin_5);	//PA5置高电平，设置方向为反转
 		PWM_SetCompare3(-Speed);			//PWM设置为负的速度值，因为此时速度值为负数，而PWM只能给正数
 	}
+}
+
+void Water_SetSpeed(int8_t Speed)
+{
+	
+		GPIO_ResetBits(GPIOA, GPIO_Pin_12);	//PA4置高电平
+		GPIO_SetBits(GPIOA, GPIO_Pin_15);	//PA5置低电平，设置方向为正转
+		PWM_SetCompare2(Speed);				//PWM设置为速度值
+			//PWM设置为负的速度值，因为此时速度值为负数，而PWM只能给正数
+	
 }

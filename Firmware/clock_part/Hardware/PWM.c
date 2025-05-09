@@ -30,6 +30,13 @@ void PWM_Init(void)
 	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);							//将PA2引脚初始化为复用推挽输出	
+    
+        	/*水泵GPIO初始化*/
+	
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
+	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);							//将PA1引脚初始化为复用推挽输出	
 	
     
 	/*配置时钟源*/
@@ -54,6 +61,7 @@ void PWM_Init(void)
 	TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;	//输出使能
 	TIM_OCInitStructure.TIM_Pulse = 0;								//初始的CCR值
 	TIM_OC1Init(TIM2, &TIM_OCInitStructure);
+    TIM_OC2Init(TIM2, &TIM_OCInitStructure);
     TIM_OC3Init(TIM2, &TIM_OCInitStructure);     //将结构体变量交给TIM_OC1Init，配置TIM2的输出比较通道1
 	
 	/*TIM使能*/
@@ -70,6 +78,11 @@ void PWM_Init(void)
 void PWM_SetCompare1(uint16_t Compare)
 {
 	TIM_SetCompare1(TIM2, Compare);		//设置CCR1的值
+}
+
+void PWM_SetCompare2(uint16_t Compare)
+{
+	TIM_SetCompare2(TIM2, Compare);		//设置CCR1的值
 }
 
 /**

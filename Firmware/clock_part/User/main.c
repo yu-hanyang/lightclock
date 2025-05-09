@@ -80,6 +80,17 @@ int main(void)
         {
             Motor_SetSpeed(0);
         }
+        
+        //Water mode == 3
+        if (info.mode == 3)
+        {
+            Water_SetSpeed(info.value[info.mode]);
+        }
+        else if (info.mode < 4 && info.mode != 3)
+        {
+            Water_SetSpeed(0);
+        }
+
 
     }
 }

@@ -5,7 +5,7 @@ This is an alarm clock which can wake up humans with lights. Wind and water can 
 
 剩下的的功能：
 
-电机两路PWM控制
+
 
 闹钟设定
 

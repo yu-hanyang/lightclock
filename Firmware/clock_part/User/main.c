@@ -189,6 +189,7 @@ int main(void)
             info.ALarm[3] = Serial_RxPacket[4 + 7] % 16 + (Serial_RxPacket[4 + 7] / 16) * 10 ;
             info.ALarm[4] = Serial_RxPacket[5 + 7] % 16 + (Serial_RxPacket[5 + 7] / 16) * 10 ;
             info.ALarm[5] = (Serial_RxPacket[6 + 7] % 16 + (Serial_RxPacket[6 + 7] / 16) * 10) ;
+            info.AL_flag = 1;
             if (Serial_RxPacket[14] != 0) //给0为自由模式，不给0不自由
             {
                 info.mode = Serial_RxPacket[14] % 16;
@@ -201,6 +202,25 @@ int main(void)
             Serial_SendPacket();
 		}
         
+        //时间判断
+        if (info.AL_flag == 1)
+        {   
+            int bj_i = 0;
+            int bj_flag = 0;
+            for (bj_i = 0; bj_i < 6;bj_i ++)
+            {
+                if (MyRTC_Time[bj_i] == info.ALarm[bj_i])
+                {
+                    bj_flag ++;
+                }
+                 
+            }
+            if (bj_flag == 6)
+            {
+                info.mode = 4;
+                info.value[info.mode] = 100;
+            }
+        }
 
     }
 }

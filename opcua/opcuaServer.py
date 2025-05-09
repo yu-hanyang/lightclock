@@ -59,26 +59,26 @@ server.start()
 print("server start...")
 try:
     while True:
-        # 设置变量的值
+
         #myvar.set_value(myvar.get_value() + 0.1)
         print(myvar.get_value())
         time.sleep(1)
         hex_data = "FF"+" "+user_year.get_value()[0]+user_year.get_value()[1]+" "+user_year.get_value()[2]+user_year.get_value()[3]+" "+user_month.get_value()+" "+user_day.get_value()+" "+user_hour.get_value()+" "+user_minute.get_value()+" "+user_second.get_value()+" "+clock_year.get_value()[0]+clock_year.get_value()[1]+" "+clock_year.get_value()[2]+clock_year.get_value()[3]+" "+clock_month.get_value()+" "+clock_day.get_value()+" "+clock_hour.get_value()+" "+clock_minute.get_value()+" "+clock_second.get_value()+" "+user_mode.get_value()+" "+user_value.get_value()+" FE"
 
         print(hex_data)
-        #处理 HEX 数据
+
         if isinstance(hex_data, str):
-            # 移除字符串中的空格和换行符
+
             hex_data = hex_data.replace(" ", "").replace("\n", "")
-            # 将 HEX 字符串转换为字节串
+
             byte_data = bytes.fromhex(hex_data)
         else:
             byte_data = hex_data
         print(byte_data)
-        # 发送数据
+
         bytes_sent = ser.write(byte_data)
-        print(f"成功发送 {bytes_sent} 字节数据")
-        print(f"发送的 HEX 数据: {byte_data.hex(' ').upper()}")
+
+        print(f" HEX: {byte_data.hex(' ').upper()}")
         time.sleep(5)
 except KeyboardInterrupt:
     print("server closing...")

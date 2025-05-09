@@ -7,6 +7,7 @@
 #include "MyRTC.h"
 #include "PWM.h"
 #include "Bigled.h"
+#include "Motor.h"
 
 int16_t Speed = 0;
 int16_t count_past = 0;
@@ -27,6 +28,7 @@ int main(void)
     CountSensor_Init();		//计数传感器初始化
     MyRTC_Init();		//RTC初始化
     PWM_Init();			//PWM初始化
+    Motor_Init();        //电机控制引脚
     
     
     OLED_ShowString(1, 1, "XX:XX:XX/XX-XXXX"); //时间显示
@@ -35,6 +37,7 @@ int main(void)
     {
         MyRTC_ReadTime();
         
+        //oled时间显示任务
         OLED_ShowNum(1, 1, MyRTC_Time[3], 2);		//时
 		OLED_ShowNum(1, 4, MyRTC_Time[4], 2);		//分
 		OLED_ShowNum(1, 7, MyRTC_Time[5], 2);		//秒
@@ -44,21 +47,38 @@ int main(void)
 		OLED_ShowNum(1, 15, MyRTC_Time[2], 2);		//日
         
         
-        
+        //oled模式和值显示任务
         OLED_ShowString(2, 1, "Mode:");
         if (count_past != CountSensor_Get() )
         {
             count_past  = CountSensor_Get();
             info.mode ++;
-            info.mode %= 10;
+            info.mode %= 5;
         }
         OLED_ShowNum(2, 7,info.mode , 1);
         OLED_ShowString(3, 1, "value:");
         OLED_ShowNum(3, 8, info.value[info.mode], 3);
         
+        //oled模式和值对应器件任务
+        //bigled mode == 1
         if (info.mode == 1)
         {
             Bigled_Set(info.value[info.mode]);
+        }
+        else if (info.mode < 4 && info.mode != 1)
+        {
+            Bigled_Set(0);
+        }
+        
+        
+        //Motor mode == 2
+        if (info.mode == 2)
+        {
+            Motor_SetSpeed(info.value[info.mode]);
+        }
+        else if (info.mode < 4 && info.mode != 2)
+        {
+            Motor_SetSpeed(0);
         }
 
     }

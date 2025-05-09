@@ -8,6 +8,7 @@
 #include "PWM.h"
 #include "Bigled.h"
 #include "Motor.h"
+#include <time.h>
 
 int16_t Speed = 0;
 int16_t count_past = 0;
@@ -16,8 +17,12 @@ typedef struct
 {
     uint16_t mode;
     int16_t value[10];
+    uint32_t ALarm[6];
+    time_t ALarm_cnt;
+    uint32_t AL_flag; //用于判断是否是闹钟引发的唤醒
 } user_info;
-user_info info = { 0, 0 };
+user_info info = {.ALarm = {2023, 1, 2, 0, 2, 55}};
+time_t dec_time;//闹钟开始时间和当前时间的差值
 
 int main(void)
 {
@@ -32,7 +37,7 @@ int main(void)
     
     
     OLED_ShowString(1, 1, "XX:XX:XX/XX-XXXX"); //时间显示
-    
+    OLED_ShowString(4, 1, "XX:XX:XX/XX-XXXX"); //闹钟显示
     while (1)
     {
         MyRTC_ReadTime();
@@ -46,6 +51,14 @@ int main(void)
 		OLED_ShowNum(1, 13, MyRTC_Time[1], 2);		//月
 		OLED_ShowNum(1, 15, MyRTC_Time[2], 2);		//日
         
+        //oled闹钟显示任务
+        OLED_ShowNum(4, 1, info.ALarm[3], 2);		//时
+		OLED_ShowNum(4, 4, info.ALarm[4], 2);		//分
+		OLED_ShowNum(4, 7, info.ALarm[5], 2);		//秒
+        
+        OLED_ShowNum(4, 10, info.ALarm[0], 2);		//显示MyRTC_Time数组中的时间值，年
+		OLED_ShowNum(4, 13, info.ALarm[1], 2);		//月
+		OLED_ShowNum(4, 15, info.ALarm[2], 2);		//日
         
         //oled模式和值显示任务
         OLED_ShowString(2, 1, "Mode:");
@@ -65,7 +78,7 @@ int main(void)
         {
             Bigled_Set(info.value[info.mode]);
         }
-        else if (info.mode < 4 && info.mode != 1)
+        else if (info.mode == 0 || info.mode == 3 || info.mode == 2)
         {
             Bigled_Set(0);
         }
@@ -76,7 +89,7 @@ int main(void)
         {
             Motor_SetSpeed(info.value[info.mode]);
         }
-        else if (info.mode < 4 && info.mode != 2)
+        else if (info.mode == 0 || info.mode == 1 || info.mode == 3)
         {
             Motor_SetSpeed(0);
         }
@@ -86,11 +99,71 @@ int main(void)
         {
             Water_SetSpeed(info.value[info.mode]);
         }
-        else if (info.mode < 4 && info.mode != 3)
+        else if (info.mode == 0 || info.mode == 1 || info.mode == 2)
         {
             Water_SetSpeed(0);
         }
-
+        
+        //唤醒程序 mode 4
+        if (info.mode == 4)
+        {
+            if (info.AL_flag == 0 && info.value[info.mode] > 50) //如果不是闹钟执行的唤醒程序 演示唤醒
+            {   
+                Water_SetSpeed(50);
+                Motor_SetSpeed(50);
+                Bigled_Set(30);
+            }
+            else if (info.AL_flag == 0 && info.value[info.mode] < 50) // 演示唤醒
+            {   
+                Water_SetSpeed(0);
+                Motor_SetSpeed(0);
+                Bigled_Set(0);
+            }
+            else if (info.AL_flag == 1 )//是闹钟触发的时间记录和条件开始
+            {
+                
+                
+                info.ALarm_cnt = RTC_GetCounter();//记录下当前的闹钟cnt
+                info.AL_flag = 2;//到闹钟唤醒状态
+                    
+                
+            }
+            else if (info.AL_flag == 2 && info.value[info.mode] > 50)//是闹钟唤醒
+            {
+                dec_time = RTC_GetCounter() - info.ALarm_cnt; //闹钟响了多久了
+                //50秒内
+                if (dec_time < 50)
+                {
+                    //亮灯
+                    Water_SetSpeed(0);
+                Motor_SetSpeed(0);
+                Bigled_Set(dec_time);
+                }
+                else if (dec_time < 70)
+                {
+                    //吹风
+                    Water_SetSpeed(0);
+                Motor_SetSpeed(dec_time);
+                Bigled_Set(50);
+                }
+                else
+                {
+                    //喷水
+                    Water_SetSpeed(70);
+                    Motor_SetSpeed(70);
+                    Bigled_Set(50);
+                }
+                    
+                
+            }
+            else if (info.AL_flag == 2 && info.value[info.mode] < 50) // 演示唤醒
+            {   
+                info.AL_flag = 0;
+            }
+            
+                
+        }
+        
 
     }
 }

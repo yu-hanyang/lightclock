@@ -37,3 +37,4 @@
 .\objects\main.o: .\Hardware\PWM.h
 .\objects\main.o: .\Hardware\Bigled.h
 .\objects\main.o: .\Hardware\Motor.h
+.\objects\main.o: E:\software\KEil5MDK\files\ARM\ARMCC\Bin\..\include\time.h

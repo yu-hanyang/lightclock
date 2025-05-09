@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\Project.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\Project.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Fri May 09 23:59:22 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Sat May 10 00:41:14 2025
 <BR><P>
 <H3>Maximum Stack Usage =        112 bytes + Unknown(Functions without stacksize, Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -860,7 +860,8 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[7a]"></a>RTC_GetCounter</STRONG> (Thumb, 16 bytes, Stack size 0 bytes, stm32f10x_rtc.o(i.RTC_GetCounter))
-<BR><BR>[Called By]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MyRTC_ReadTime
+<BR><BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
+<LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MyRTC_ReadTime
 </UL>
 
 <P><STRONG><a name="[7c]"></a>RTC_SetCounter</STRONG> (Thumb, 24 bytes, Stack size 4 bytes, stm32f10x_rtc.o(i.RTC_SetCounter))
@@ -1058,10 +1059,11 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[44]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[44]"></a>main</STRONG> (Thumb, 380 bytes, Stack size 0 bytes, main.o(i.main))
+<P><STRONG><a name="[44]"></a>main</STRONG> (Thumb, 750 bytes, Stack size 0 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 112<LI>Call Chain = main &rArr; MyRTC_Init &rArr; MyRTC_SetTime &rArr; mktime &rArr; _tm_carry
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Water_SetSpeed
+<BR>[Calls]<UL><LI><a href="#[7a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;RTC_GetCounter
+<LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Water_SetSpeed
 <LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor_SetSpeed
 <LI><a href="#[68]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Motor_Init
 <LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Bigled_Set

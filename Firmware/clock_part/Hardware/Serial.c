@@ -213,6 +213,20 @@ void USART1_IRQHandler(void)
 		else if (RxState == 1)
 		{
 			Serial_RxPacket[pRxPacket] = RxData;	//将数据存入数据包数组的指定位置
+//            if (RxData <= 0x09)
+//            {
+//                Serial_RxPacket[pRxPacket] = RxData;
+//            }
+//            else
+//            {   
+//                int a = RxData;
+//                a >>= 4;
+//                a *= 10;
+//                int b = RxData % 16;
+//                Serial_RxPacket[pRxPacket] = a + b;
+//                
+//                
+//            }
 			pRxPacket ++;				//数据包的位置自增
 			if (pRxPacket >= 16)			//如果收够4个数据
 			{

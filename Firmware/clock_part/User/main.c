@@ -9,6 +9,8 @@
 #include "Bigled.h"
 #include "Motor.h"
 #include <time.h>
+#include "Serial.h"
+#include <string.h>
 
 int16_t Speed = 0;
 int16_t count_past = 0;
@@ -34,7 +36,7 @@ int main(void)
     MyRTC_Init();		//RTC初始化
     PWM_Init();			//PWM初始化
     Motor_Init();        //电机控制引脚
-    
+    Serial_Init();		//串口初始化
     
     OLED_ShowString(1, 1, "XX:XX:XX/XX-XXXX"); //时间显示
     OLED_ShowString(4, 1, "XX:XX:XX/XX-XXXX"); //闹钟显示
@@ -163,6 +165,17 @@ int main(void)
             
                 
         }
+        
+        
+        //串口数据部分
+        if (Serial_GetRxFlag() == 1)	//如果接收到数据包
+		{   
+            memcpy(Serial_TxPacket, Serial_RxPacket, 18);
+           
+            Serial_SendPacket();
+            
+			
+		}
         
 
     }

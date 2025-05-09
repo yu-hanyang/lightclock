@@ -38,3 +38,6 @@
 .\objects\main.o: .\Hardware\Bigled.h
 .\objects\main.o: .\Hardware\Motor.h
 .\objects\main.o: E:\software\KEil5MDK\files\ARM\ARMCC\Bin\..\include\time.h
+.\objects\main.o: .\Hardware\Serial.h
+.\objects\main.o: E:\software\KEil5MDK\files\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: E:\software\KEil5MDK\files\ARM\ARMCC\Bin\..\include\string.h

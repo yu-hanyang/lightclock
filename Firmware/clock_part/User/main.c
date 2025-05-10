@@ -193,7 +193,7 @@ int main(void)
             if (Serial_RxPacket[14] != 0) //给0为自由模式，不给0不自由
             {
                 info.mode = Serial_RxPacket[14] % 16;
-                info.value[info.mode] = Serial_RxPacket[15] % 16;
+                info.value[info.mode] = Serial_RxPacket[15] % 16 + (Serial_RxPacket[15] / 16) * 10;
                 //info.value[info.mode] = MyRTC_Time[0];
             }
             //串口数据回显
